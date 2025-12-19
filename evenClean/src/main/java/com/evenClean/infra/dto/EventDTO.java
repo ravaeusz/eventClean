@@ -1,4 +1,4 @@
-package com.evenClean.infra.dto.response;
+package com.evenClean.infra.dto;
 
 import com.evenClean.core.enums.EventType;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record EventResponse (
+public record EventDTO(
         Long id,
         String name,
         String description,

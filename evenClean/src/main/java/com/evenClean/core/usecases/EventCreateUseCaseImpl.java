@@ -1,9 +1,9 @@
 package com.evenClean.core.usecases;
 
-
 import com.evenClean.core.entities.Event;
 
-public class eventGetCaseImpl implements eventGetCase{
+public class EventCreateUseCaseImpl implements EventCreateUseCase {
+
 
     @Override
     public Event execute(Event event) {
