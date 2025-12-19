@@ -2,11 +2,19 @@ package com.evenClean.infra.persistence;
 
 import com.evenClean.core.enums.EventType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "EVENTS")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 public class Event {
 
     @Id
