@@ -7,6 +7,8 @@ import com.evenClean.infra.persistence.EventEntity;
 import com.evenClean.infra.persistence.EventRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class EventRepositoryGateway implements EventGateway {
 
@@ -23,4 +25,11 @@ public class EventRepositoryGateway implements EventGateway {
         EventEntity saved = repository.save(eventEntityMapper.toEntity(event));
         return eventEntityMapper.toDomain(saved);
     }
+
+    @Override
+    public List<Event> eventGet() {
+       return repository.findAll().stream().map(eventEntityMapper::toDomain).toList();
+    }
+
+
 }

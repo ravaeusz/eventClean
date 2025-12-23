@@ -2,11 +2,20 @@ package com.evenClean.core.usecases;
 
 
 import com.evenClean.core.entities.Event;
+import com.evenClean.core.gateway.EventGateway;
+
+import java.util.List;
 
 public class EventGetUseCaseImpl implements EventGetUseCase {
 
+    private final EventGateway eventGateway;
+
+    public EventGetUseCaseImpl(EventGateway eventGateway) {
+        this.eventGateway = eventGateway;
+    }
+
     @Override
-    public Event execute(Event event) {
-        return null;
+    public List<Event> execute() {
+        return eventGateway.eventGet();
     }
 }

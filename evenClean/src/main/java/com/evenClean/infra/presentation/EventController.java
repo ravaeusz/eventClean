@@ -8,6 +8,7 @@ import com.evenClean.infra.mapper.EventMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -31,7 +32,8 @@ public class EventController {
     }
 
     @GetMapping("get-event")
-    public String eventGet(){
-        return "";
+    public List<EventDTO> eventGet(){
+        List<Event> events = eventGetUseCase.execute();
+        return events.stream().map(eventMapper::toDTO).collect(Collectors.toList());
     }
 }
