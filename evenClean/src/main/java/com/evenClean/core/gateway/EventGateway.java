@@ -8,6 +8,8 @@ import java.util.List;
 public interface EventGateway {
 
     Event eventCreate(Event event);
-    List<Event> eventGet();
 
+    List<Event> getEvent();
+
+    Event getIdentificador(String identification);
 }

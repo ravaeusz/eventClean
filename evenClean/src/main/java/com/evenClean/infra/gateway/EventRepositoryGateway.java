@@ -2,6 +2,7 @@ package com.evenClean.infra.gateway;
 
 import com.evenClean.core.entities.Event;
 import com.evenClean.core.gateway.EventGateway;
+import com.evenClean.infra.exceptions.DuplicatedException;
 import com.evenClean.infra.mapper.EventEntityMapper;
 import com.evenClean.infra.persistence.EventEntity;
 import com.evenClean.infra.persistence.EventRepository;
@@ -26,10 +27,16 @@ public class EventRepositoryGateway implements EventGateway {
         return eventEntityMapper.toDomain(saved);
     }
 
+
     @Override
-    public List<Event> eventGet() {
+    public List<Event> getEvent() {
        return repository.findAll().stream().map(eventEntityMapper::toDomain).toList();
     }
 
 
+    @Override
+    public Event getIdentificador(String identification) {
+        EventEntity id = repository.findByIdentification(identification);
+        return eventEntityMapper.toDomain(id);
+    }
 }
