@@ -22,4 +22,9 @@ public class BeanConfiguration {
     public IdentificationGetUseCase identificationGetUseCase(EventGateway eventGateway){
         return new IdentificationGetUseCaseImpl(eventGateway);
     }
+
+    @Bean
+    public GenerateRandomIdentificationUseCase generateRandomIdentificationUseCase(EventGateway eventGateway){
+        return new GenerateRandomIdentificationUseCaseImpl(eventGateway);
+    }
 }

@@ -3,6 +3,7 @@ package com.evenClean.infra.presentation;
 import com.evenClean.core.entities.Event;
 import com.evenClean.core.usecases.EventCreateUseCase;
 import com.evenClean.core.usecases.EventGetUseCase;
+import com.evenClean.core.usecases.GenerateRandomIdentificationUseCase;
 import com.evenClean.core.usecases.IdentificationGetUseCase;
 import com.evenClean.infra.dto.EventDTO;
 import com.evenClean.infra.exceptions.DuplicatedException;
@@ -24,28 +25,48 @@ public class EventController {
     private final EventCreateUseCase eventCreateUseCase;
     private final EventGetUseCase eventGetUseCase;
     private final IdentificationGetUseCase identificationGetUseCase;
+    private final GenerateRandomIdentificationUseCase generateRandomIdentificationUseCase;
     private final EventMapper eventMapper;
 
-    public EventController(EventCreateUseCase eventCreateUseCase, EventGetUseCase eventGetUseCase, IdentificationGetUseCase identificationGetUseCase, EventMapper eventMapper) {
+    public EventController(EventCreateUseCase eventCreateUseCase, EventGetUseCase eventGetUseCase, IdentificationGetUseCase identificationGetUseCase, GenerateRandomIdentificationUseCase generateRandomIdentificationUseCase, EventMapper eventMapper) {
         this.eventCreateUseCase = eventCreateUseCase;
         this.eventGetUseCase = eventGetUseCase;
         this.identificationGetUseCase = identificationGetUseCase;
+        this.generateRandomIdentificationUseCase = generateRandomIdentificationUseCase;
         this.eventMapper = eventMapper;
     }
 
     @PostMapping("event")
     public ResponseEntity<HashMap<String, Object>> eventCreate(@RequestBody EventDTO dto){
         Event event = eventMapper.toEntity(dto);
-        Event filter =  identificationGetUseCase.execute(event.identification());
+        String randomIdentification = generateRandomIdentificationUseCase.execute();
+
+        Event filter =  identificationGetUseCase.execute(randomIdentification);
 
         if (filter != null){
             throw new DuplicatedException("Evento com o mesmo identificador " +dto.identification()+ " já existe");
         }
 
-        Event newEvent = eventCreateUseCase.execute(event);
+        Event eventWithRandomIdentification = new Event(
+                event.id(),
+                event.name(),
+                event.description(),
+                event.dateInitial(),
+                event.dateFinal(),
+                randomIdentification,
+                event.localEvent(),
+                event.capacity(),
+                event.organization(),
+                event.type()
+        );
+
+
+        Event newEvent = eventCreateUseCase.execute(eventWithRandomIdentification);
+
         HashMap<String, Object> response = new HashMap<>();
         response.put("message","Cadastrado com sucesso!");
         response.put("data", eventMapper.toDTO(newEvent));
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

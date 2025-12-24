@@ -12,4 +12,6 @@ public interface EventGateway {
     List<Event> getEvent();
 
     Event getIdentificador(String identification);
+
+    String generateIdentification();
 }
